@@ -14,12 +14,6 @@ bool Power::forcePowerOff()
     std::cout << "forcePowerOff" << std::endl;
     return true;
 }
-
-bool Power::pgood(bool value)
-{
-    std::cout << "pgood,value = " << value << std::endl;
-    return PowerInherit::pgood(value);
-}
 } // namespace chassis
 } // namespace inspur
 } // namespace com

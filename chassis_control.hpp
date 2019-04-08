@@ -1,8 +1,9 @@
 #pragma once
 
 #include <com/inspur/Chassis/Control/Power/server.hpp>
-#include <iostream>
+#include <functional>
 #include <sdeventplus/event.hpp>
+#include <sdeventplus/source/io.hpp>
 
 namespace com
 {
@@ -24,8 +25,6 @@ class Power : public PowerInherit
     }
 
     bool forcePowerOff() override;
-
-    bool pgood(bool value) override;
 
   private:
     sdeventplus::Event& event;
