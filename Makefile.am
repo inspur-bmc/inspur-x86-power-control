@@ -4,7 +4,8 @@ inspur_x86_power_control_SOURCES = \
 	main.cpp \
 	argument.cpp \
 	chassis_control.cpp \
-	evdev.cpp
+	evdev.cpp \
+	gpio.cpp
 
 inspur_x86_power_control_CXXFLAGS = \
 	${SYSTEMD_CFLAGS} \
