@@ -1,0 +1,9 @@
+- name: power_out
+  key: 27
+  path: /dev/gpiochip0
+- name: reset_out
+  key: 31
+  path: /dev/gpiochip0
+- name: pgood
+  key: 121
+  path: /dev/input/by-path/platform-gpio-keys-event

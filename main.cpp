@@ -27,11 +27,6 @@ int main(int argc, char** argv)
         bus.attach_event(event.get(), SD_EVENT_PRIORITY_NORMAL);
 
         Power power0(bus, objPath.c_str(), event);
-        Evdev pgoodEvdev(argumentParser["pgood_path"],
-                         std::stoi(argumentParser["pgood_keycode"]),
-                         std::bind(std::mem_fn<bool(bool)>(&Power::pgood),
-                                   &power0, std::placeholders::_1),
-                         event);
         return event.loop();
     }
     catch (const sdeventplus::SdEventError& e)

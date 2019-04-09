@@ -1,6 +1,7 @@
 #pragma once
 
 #include "file.hpp"
+#include "types.hpp"
 
 #include <libevdev-1.0/libevdev/libevdev.h>
 
@@ -36,10 +37,11 @@ class Evdev
     Evdev(Evdev&&) = delete;
     Evdev& operator=(Evdev&&) = delete;
 
-    Evdev(const std::string& path, const unsigned int key,
-          EvdevCallback callback, sdeventplus::Event& event) :
-        path(path),
-        key(key), callback(callback), event(event), fd(openDevice()),
+    Evdev(const GpioDefinition& gpiodef, EvdevCallback callback,
+          sdeventplus::Event& event) :
+        path(std::get<pathField>(gpiodef)),
+        key(std::get<keyField>(gpiodef)), callback(callback), event(event),
+        fd(openDevice()),
         ioSource(event, fd(), EPOLLIN,
                  std::bind(std::mem_fn(&Evdev::processEvents), this,
                            std::placeholders::_1, std::placeholders::_2,

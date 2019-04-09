@@ -1,6 +1,7 @@
 #pragma once
 
 #include "file.hpp"
+#include "types.hpp"
 
 #include <linux/gpio.h>
 
@@ -32,10 +33,9 @@ class Gpio
     Gpio(Gpio&&) = delete;
     Gpio& operator=(Gpio&&) = delete;
 
-    Gpio(const std::string& path, const GpioNumber gpio,
-         const std::string& label, Value defaultValue = Value::high) :
-        path(path),
-        gpio(gpio), label(label), lineFd(requestLine(defaultValue))
+    Gpio(const GpioDefinition& gpiodef, Value defaultValue = Value::high) :
+        path(std::get<pathField>(gpiodef)), gpio(std::get<keyField>(gpiodef)),
+        label(std::get<labelField>(gpiodef)), lineFd(requestLine(defaultValue))
     {
     }
 

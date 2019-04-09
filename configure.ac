@@ -31,6 +31,13 @@ AC_ARG_VAR(CHASSIS_OBJPATH, [The chassis state manager Dbus root])
 AS_IF([test "x$CHASSIS_OBJPATH" == "x"], [CHASSIS_OBJPATH="/com/inspur/chassis/power/chassis"])
 AC_DEFINE_UNQUOTED([CHASSIS_OBJPATH], ["$CHASSIS_OBJPATH"], [The chassis state manager Dbus root])
 
+#Add optional yaml file arguments
+AC_ARG_VAR(GPIOS_DEF_YAML_FILE,
+        [The gpios definition file to use])
+AS_IF([test "x$GPIOS_DEF_YAML_FILE" == "x"],
+        [GPIOS_DEF_YAML_FILE="\${top_srcdir}/example/gpiodefs.yaml"])
+AC_DEFINE_UNQUOTED([GPIOS_DEF_YAML_FILE], ["$GPIOS_DEF_YAML_FILE"],
+                          [The gpios definition file to use])
 
 # Create configured output
 AC_CONFIG_FILES([Makefile])
