@@ -6,8 +6,10 @@
 
 #include <com/inspur/Chassis/Control/Power/server.hpp>
 #include <functional>
+#include <sdeventplus/clock.hpp>
 #include <sdeventplus/event.hpp>
 #include <sdeventplus/source/io.hpp>
+#include <sdeventplus/utility/timer.hpp>
 
 namespace com
 {
@@ -18,6 +20,7 @@ namespace chassis
 using PowerInherit = sdbusplus::server::object_t<
     sdbusplus::com::inspur::Chassis::Control::server::Power>;
 
+using Timer = sdeventplus::utility::Timer<sdeventplus::ClockId::RealTime>;
 class Power : public PowerInherit
 {
   public:
@@ -25,10 +28,12 @@ class Power : public PowerInherit
           sdeventplus::Event& event) :
         PowerInherit(bus, objPath),
         event(event), power_out(findGpioDefinition("power_out")),
+        reset_out(findGpioDefinition("reset_out")),
         pgoodEvdev(findGpioDefinition("pgood"),
                    std::bind(std::mem_fn<bool(bool)>(&Power::pGood), this,
                              std::placeholders::_1),
-                   event)
+                   event),
+        resetTimer(event, nullptr), powerTimer(event, nullptr)
     {
     }
 
@@ -41,7 +46,11 @@ class Power : public PowerInherit
     sdeventplus::Event& event;
 
     Gpio power_out;
+    Gpio reset_out;
     Evdev pgoodEvdev;
+
+    Timer resetTimer;
+    Timer powerTimer;
 };
 } // namespace chassis
 } // namespace inspur
