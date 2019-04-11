@@ -1,6 +1,5 @@
 #include "config.h"
 
-#include "argument.hpp"
 #include "chassis_control.hpp"
 #include "evdev.hpp"
 
@@ -15,8 +14,6 @@
 using namespace com::inspur::chassis;
 int main(int argc, char** argv)
 {
-    argument::ArgumentParser argumentParser(argc, argv);
-
     try
     {
         auto objPath = std::string{CHASSIS_OBJPATH} + '0';
