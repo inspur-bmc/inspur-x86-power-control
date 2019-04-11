@@ -27,10 +27,10 @@ class Power : public PowerInherit
     Power(sdbusplus::bus::bus& bus, const char* objPath,
           sdeventplus::Event& event) :
         PowerInherit(bus, objPath),
-        event(event), power_out(findGpioDefinition("power_out")),
+        bus(bus), event(event), power_out(findGpioDefinition("power_out")),
         reset_out(findGpioDefinition("reset_out")),
         pgoodEvdev(findGpioDefinition("pgood"),
-                   std::bind(std::mem_fn<bool(bool)>(&Power::pGood), this,
+                   std::bind(std::mem_fn(&Power::pgoodHandle), this,
                              std::placeholders::_1),
                    event),
         resetTimer(event, nullptr), powerTimer(event, nullptr)
@@ -43,6 +43,7 @@ class Power : public PowerInherit
     void hardReset() override;
 
   private:
+    sdbusplus::bus::bus& bus;
     sdeventplus::Event& event;
 
     Gpio power_out;
@@ -51,6 +52,10 @@ class Power : public PowerInherit
 
     Timer resetTimer;
     Timer powerTimer;
+
+    void startSystemdUnit(const std::string& unit);
+    void syncChassisState();
+    void pgoodHandle(bool value);
 };
 } // namespace chassis
 } // namespace inspur

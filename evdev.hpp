@@ -27,7 +27,7 @@ struct FreeEvDev
 
 using EvdevPtr = std::unique_ptr<struct libevdev, FreeEvDev>;
 
-using EvdevCallback = std::function<bool(bool value)>;
+using EvdevCallback = std::function<void(bool value)>;
 class Evdev
 {
   public:
