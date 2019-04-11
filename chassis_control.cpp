@@ -22,6 +22,11 @@ constexpr auto SYSTEMD_INTERFACE = "org.freedesktop.systemd1.Manager";
 
 void Power::powerOn()
 {
+    std::cout << "PowerOn" << std::endl;
+    if (pGood())
+    {
+        return;
+    }
     power_out.set(Gpio::Value::low);
     auto cb = [&](Timer& timer) {
         std::cout << "pwerOn timer cb" << std::endl;
@@ -33,6 +38,10 @@ void Power::powerOn()
 
 void Power::softPowerOff()
 {
+    if (!pGood())
+    {
+        return;
+    }
     power_out.set(Gpio::Value::low);
     auto cb = [&](Timer& timer) {
         std::cout << "softPowerOff timer cb" << std::endl;
@@ -44,6 +53,11 @@ void Power::softPowerOff()
 
 void Power::hardPowerOff()
 {
+    std::cout << "hardPowerOff" << std::endl;
+    if (!pGood())
+    {
+        return;
+    }
     power_out.set(Gpio::Value::low);
     auto cb = [&](Timer& timer) {
         std::cout << "hardPowerOff timer cb" << std::endl;
